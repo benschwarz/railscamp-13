@@ -11,29 +11,48 @@ class Thirteen < Sinatra::Base
 
   register Sinatra::SequelExtension
 
-  # migration "create the x table" do
-  #   database.create_table :somethings do
+  # migration "create the entrants table" do
+  #   database.create_table :entrants do
   #     primary_key :id
+  #     Time :created_at, null: false
+  #     String :name, null: false
+  #     TrueClass :chosen, null: false, default: false
   #   end
   # end
 
-  # class Something < Sequel::Model
-  #   set_allowed_columns :col1, :col2
+  # class Entrant < Sequel::Model
+  #   set_allowed_columns :name
   #   def validate
   #     super
-  #     errors.add(:field, 'is empty') if !field || field.empty?
+  #     errors.add(:field, 'is empty') if !name || name.empty?
   #   end
   #   def before_save
   #     self.created_at = Time.now.utc
   #   end
   # end
 
-  # post '/' do
-  # end
-
   get '/' do
     send_file 'public/index.html'
   end
+
+  # get '/register' do
+  #   haml :register
+  # end
+
+  # post '/register' do
+  #   entrant = Entrant.new(params[:entrant])
+  #   if entrant.valid?
+  #     entrant.save
+  #     redirect "/register/thanks"
+  #   else
+  #     @errors = entrant.errors
+  #     haml :register
+  #   end
+  # end
+
+  # get '/thanks' do
+  #   haml :thanks
+  # end
 
 end
 end
