@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     sass: {
       main: {
         files: {
-          'css/screen.css': 'sass/screen.scss'
+          'public/css/screen.css': 'sass/screen.scss'
         }
       }
     },
@@ -19,13 +19,13 @@ module.exports = function(grunt) {
       server: {
         options: {
           port: 3000,
-          base: './'
+          base: './public'
         }
       }
     }
   });
- 
-  grunt.registerTask('default', ['sass', 'concat']);
+
+  grunt.registerTask('default', ['sass']);
   grunt.registerTask('dev', ['connect', 'watch']);
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
