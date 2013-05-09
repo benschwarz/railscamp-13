@@ -35,9 +35,9 @@ class Thirteen < Sinatra::Base
     send_file 'public/index.html'
   end
 
-  # get '/register' do
-  #   haml :register
-  # end
+  get '/register' do
+    erb :register
+  end
 
   # post '/register' do
   #   entrant = Entrant.new(params[:entrant])
