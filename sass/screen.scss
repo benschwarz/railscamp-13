@@ -1,0 +1,45 @@
+html, body { height: 100%; }
+
+* { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+body { 
+  display: table;
+  width: 100%;
+
+  color: white;
+
+  font-family: "Proxima Nova";
+  text-align: center;
+
+  background: url("/images/bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.event-info {
+  width: 100%; /* needed for FF */
+  margin: 0;
+  
+  display: box; 
+  display: flexbox;
+  
+  box-align: center; 
+  flex-align: center;
+  
+  box-pack: center;
+  flex-pack: center;
+}
+
+.event-info h1 { 
+  font: 6.2em/0.9 "ScalaSansOT-Black";
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.sponsors { display: table-footer-group; }
+
+.sponsor {
+  display: inline-block;
+  width: 23%;
+  padding: 5em 0;
+}
+
