@@ -1,9 +1,15 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <script src="/public/js/app.js"></script>
-  </head>
-  <body>
-    <%= yield %>
-  </body>
+<!doctype html>
+<html lang="en" class="<%= @page_class %>">
+<head>
+  <meta charset="UTF-8">
+  <title><%= "#{@page_title} - " if @page_title %>Railscamp XII, Melbourne: 21 — 24th of June</title>
+  <link rel="stylesheet" href="components/normalize-css/normalize.css">
+  <link rel="stylesheet" href="css/screen.css">
+
+  <script src="js/vendor/modernizr.min.js" async></script>
+  <script src="components/prefix-free/prefixfree.min.js"></script>
+</head>
+<body>
+  <%= yield %>
+</body>
 </html>

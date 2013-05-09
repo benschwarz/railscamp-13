@@ -32,7 +32,7 @@ class Thirteen < Sinatra::Base
   # end
 
   get '/' do
-    send_file 'public/index.html'
+    erb :home
   end
 
   get '/register' do
