@@ -4,18 +4,7 @@ module.exports = function(grunt) {
 
     watch: {
       files: ['sass/*.scss'],
-      tasks: ['sass', 'concat']
-    },
-
-    concat: {
-      main: {
-        files: {
-          'css/main.css': [
-            'components/normalize-css/normalize.css',
-            'css/screen.css'
-          ]
-        }
-      }
+      tasks: 'sass'
     },
 
     sass: {
@@ -24,12 +13,20 @@ module.exports = function(grunt) {
           'css/screen.css': 'sass/screen.scss'
         }
       }
+    },
+
+    connect: {
+      server: {
+        options: {
+          port: 3000,
+          base: './'
+        }
+      }
     }
   });
  
   grunt.registerTask('default', ['sass', 'concat']);
+  grunt.registerTask('dev', ['connect', 'watch']);
 
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-concat');
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 };
