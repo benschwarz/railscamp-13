@@ -1,14 +1,6 @@
 # Railscamp 13 Website
 
-## Frontend setup
+To get started, run `./script/[bootstrap](script/bootstrap)`
 
-    npm install -g grunt-cli
-    npm install
-    grunt watch
-
-## Backend setup
-
-    createdb railscamp_13
-    cp .sample.env .env
-    bundle
-    foreman start
+* Run `grunt watch` to have your CSS processed
+* Run `foreman start` to run the Sinatra app
