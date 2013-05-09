@@ -2,6 +2,7 @@
   fieldset { margin: 0; padding: 0; border: none; }
   label, input, textarea, div { display: block; }
   label { margin-bottom: 1em; }
+  div.radio label, div.radio input { display: inline; }
 </style>
 
 <h1>Register</h1>
@@ -14,6 +15,15 @@
     <label>Name<input required autocompletetype="name"></label>
     <label>Email<input type="email" required autocompletetype="email"></label>
     <label>Dietary or other requirements<textarea></textarea></label>
+  </fieldset>
+  <fieldset>
+    <h2>Tee</h2>
+    <div class="radio">
+      Cut
+      <label><input name="tee-cut" type="radio"> Guy</label>
+      <label><input name="tee-cut" type="radio"> Girl</label>
+    </div>
+    <label>Size<select><option>XS</option><option>S</option><option>M</option><option selected>L</option><option>XL</option><option>2XL</option></select></label>
   </fieldset>
   <fieldset>
     <h2>Payment</h2>
