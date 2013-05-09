@@ -8,24 +8,25 @@
 
 <p>Here's a big explanation of the ballot registration process.</p>
 
-<form method="post" action="">
+<form method="post" action="" autocomplete="on">
   <fieldset>
     <h2>Attendee</h2>
-    <label>Name<input></label>
-    <label>Email<input></label>
+    <label>Name<input required autocompletetype="name"></label>
+    <label>Email<input type="email" required autocompletetype="email"></label>
     <label>Dietary or other requirements<textarea></textarea></label>
   </fieldset>
   <fieldset>
     <h2>Payment</h2>
-    <label>Name<input></label>
-    <label>Number<input></label>
-    <label>Expiry<div><select><option></option></select><select><option></option></select></div></label>
-    <label>CVC<input></label>
-    <label>Address<input></label>
-    <label>City<input></label>
-    <label>State<input></label>
-    <label>State<input></label>
-    <label>Postal/Zip<input></label>
+    <p>Payment must be by credit card. If you're randomly chosen from the ballot on the xth of X 2013, the following card will be charged $123. You will be notified 24 hours before the charge occurs.</p>
+    <label>Name on card<input required autocompletetype="cc-name" placeholder="Name of card holder"></label>
+    <label>Credit card number<input type="text" pattern="\d*" autocompletetype="cc-number" placeholder="4242424242424242" required></label>
+    <label>Expiry<input type="text" pattern="\d*" autocompletetype="cc-expiry" placeholder="01/2020" required></label>
+    <label>CVC<input type="text" pattern="\d*" autocompletetype="cc-csc" placeholder="123" required autocomplete="off"></label>
+    <label>Address<input required autocompletetype="street-address"></label>
+    <label>City<input required autocompletetype="city"></label>
+    <label>Postcode<input required autocompletetype="postal-code"></label>
+    <label>State<input required autocompletetype="state"></label>
+    <label>Country<input required autocompletetype="country-name"></label>
   </fieldset>
   <fieldset>
     <button>Register</button>
