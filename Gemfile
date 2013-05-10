@@ -10,4 +10,5 @@ gem "json"
 group :development do
   # For sinatra/reloader
   gem "sinatra-contrib"
+  gem "foreman"
 end
