@@ -5,6 +5,10 @@ require 'json'
 module Railscamp
 class Thirteen < Sinatra::Base
 
+  MALE_TEE_SIZES = %w( S M L 2XL )
+  FEMALE_TEE_SIZES = %w( XS S M L 2XL )
+  TEE_SIZE_DEFAULT = "L"
+
   configure :development do
     require 'sinatra/reloader'
     register Sinatra::Reloader
@@ -44,6 +48,18 @@ class Thirteen < Sinatra::Base
       publishable_key: ENV['PIN_LIVE_PUBLISHABLE_KEY'],
       api_host: 'api.pin.net.au'
     }
+  end
+
+  helpers do
+    def male_tee_sizes
+      MALE_TEE_SIZES
+    end
+    def female_tee_sizes
+      FEMALE_TEE_SIZES
+    end
+    def tee_size_default
+      TEE_SIZE_DEFAULT
+    end
   end
 
   # Serve up bower components

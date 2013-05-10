@@ -8,7 +8,14 @@
   fieldset { margin: 0; padding: 0; border: none; }
   label, input, textarea, div { display: block; }
   label { margin-bottom: 1em; }
-  div.radio label, div.radio input { display: inline; }
+  input[type="radio"], input[type="radio"] + label { display: inline; }
+  input[type="radio"] + label { margin-left: .5em; }
+
+  .cut .size { display: none; }
+  #entrant_tee_cut_male:checked ~ label[for="entrant_tee_size_male"],
+    #entrant_tee_cut_male:checked ~ #entrant_tee_size_male { display: block; }
+  #entrant_tee_cut_female:checked ~ label[for="entrant_tee_size_female"],
+    #entrant_tee_cut_female:checked ~ #entrant_tee_size_female { display: block; }
 </style>
 
 <h1>Register</h1>
@@ -24,12 +31,19 @@
   </fieldset>
   <fieldset>
     <h2>Your Tee</h2>
-    <div class="radio">
+    <div class="cut">
       Cut
-      <label><input name="entrant[tee_cut]" type="radio" value="guy"> Guy</label>
-      <label><input name="entrant[tee_cut]" type="radio" value="girl"> Girl</label>
+      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_male"><label for="entrant_tee_cut_male">Male</label>
+      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_female"><label for="entrant_tee_cut_female">Female</label>
+      <label class="size" for="entrant_tee_size_male">Size</label>
+      <select class="size" name="entrant[tee_size_male]" id="entrant_tee_size_male">
+        <% for s in male_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
+      </select>
+      <label class="size" for="entrant_tee_size_female">Size</label>
+      <select class="size" name="entrant[tee_size_female]" id="entrant_tee_size_female">
+        <% for s in female_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
+      </select>
     </div>
-    <label>Size<select name="entrant[tee_size]"><option>XS</option><option>S</option><option>M</option><option selected>L</option><option>XL</option><option>2XL</option></select></label>
   </fieldset>
   <fieldset>
     <h2>Payment</h2>
