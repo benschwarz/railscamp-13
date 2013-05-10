@@ -5,6 +5,7 @@ gem "rack-ssl"
 gem "sinatra"
 gem "sinatra-sequel"
 gem "pg"
+gem "json"
 
 group :development do
   # For sinatra/reloader

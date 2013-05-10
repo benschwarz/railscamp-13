@@ -15,34 +15,34 @@
 
 <p>Here's a big explanation of the ballot registration process.</p>
 
-<form method="post" autocomplete>
+<form method="post">
   <fieldset>
     <h2>You</h2>
-    <label>Name<input required autocompletetype="name"></label>
-    <label>Email<input type="email" required autocompletetype="email"></label>
+    <label>Name<input name="entrant[name]" required autocompletetype="name"></label>
+    <label>Email<input name="entrant[email]" type="email" required autocompletetype="email"></label>
     <label>Dietary or other requirements<textarea></textarea></label>
   </fieldset>
   <fieldset>
     <h2>Your Tee</h2>
     <div class="radio">
       Cut
-      <label><input name="tee-cut" type="radio"> Guy</label>
-      <label><input name="tee-cut" type="radio"> Girl</label>
+      <label><input name="entrant[tee_cut]" type="radio" value="guy"> Guy</label>
+      <label><input name="entrant[tee_cut]" type="radio" value="girl"> Girl</label>
     </div>
-    <label>Size<select><option>XS</option><option>S</option><option>M</option><option selected>L</option><option>XL</option><option>2XL</option></select></label>
+    <label>Size<select name="entrant[tee_size]"><option>XS</option><option>S</option><option>M</option><option selected>L</option><option>XL</option><option>2XL</option></select></label>
   </fieldset>
   <fieldset>
     <h2>Payment</h2>
     <p>Payment of $123 must be by credit card, but will be only be charged if you win the ballot. You’ll receive an email letting you know if you got a ticket, along with a receipt for your purchase.</p>
-    <label>Name on card<input required autocompletetype="cc-name" placeholder="Name of card holder"></label>
-    <label>Credit card number<input type="text" autocompletetype="cc-number" placeholder="4242424242424242" required></label>
-    <label>Expiry<input type="text" autocompletetype="cc-expiry" placeholder="01/2020" required></label>
-    <label>CVC<input type="text" autocompletetype="cc-csc" placeholder="123" required autocomplete="off"></label>
-    <label>Address<input required autocompletetype="street-address"></label>
-    <label>City<input required autocompletetype="city"></label>
-    <label>Postcode<input required autocompletetype="postal-code"></label>
-    <label>State<input required autocompletetype="state"></label>
-    <label>Country<input required autocompletetype="country-name"></label>
+    <label>Name on card<input name='entrant[cc_name]' required autocompletetype="cc-name" data-pin="name"></label>
+    <label>Credit card number<input type="text" autocompletetype="cc-number" format="\d+" placeholder="4242424242424242" required data-pin="number"></label>
+    <label>Expiry (MM/YYYY)<input type="text" autocompletetype="cc-expiry" format="\d\d/\d\d\d\d" placeholder="01/2020" required data-pin="expiry"></label>
+    <label>CVC<input type="text" autocompletetype="cc-csc" placeholder="123" required autocomplete="off" data-pin="cvc"></label>
+    <label>Address<input name='entrant[cc_address]' required autocompletetype="street-address" data-pin="address_line1"></label>
+    <label>City<input name='entrant[cc_city]' required autocompletetype="city" data-pin="address_city"></label>
+    <label>Postcode<input name='entrant[cc_post_code]' required autocompletetype="postal-code" data-pin="address_postcode"></label>
+    <label>State<input name='entrant[cc_state]' required autocompletetype="state" data-pin="address_state"></label>
+    <label>Country<input name='entrant[cc_country]' required autocompletetype="country-name" data-pin="address_country"></label>
   </fieldset>
   <fieldset>
     <button>Register</button>

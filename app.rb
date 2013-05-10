@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/sequel'
+require 'json'
 
 module Railscamp
 class Thirteen < Sinatra::Base
@@ -31,6 +32,20 @@ class Thirteen < Sinatra::Base
   #   end
   # end
 
+  configure :development do
+    set :pin, {
+      publishable_key: ENV['PIN_TEST_PUBLISHABLE_KEY'],
+      api_host: 'test-api.pin.net.au'
+    }
+  end
+
+  configure :production do
+    set :pin, {
+      publishable_key: ENV['PIN_LIVE_PUBLISHABLE_KEY'],
+      api_host: 'api.pin.net.au'
+    }
+  end
+
   # Serve up bower components
   Dir['components/*/*.{js,css}'].each do |f|
     get "/#{f}" do
@@ -44,6 +59,11 @@ class Thirteen < Sinatra::Base
 
   get '/register' do
     erb :register
+  end
+
+  post '/register' do
+    content_type 'text/plain'
+    JSON.pretty_generate(params)
   end
 
   # post '/register' do
