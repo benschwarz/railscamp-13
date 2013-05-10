@@ -31,6 +31,13 @@ class Thirteen < Sinatra::Base
   #   end
   # end
 
+  # Serve up bower components
+  Dir['components/*/*.{js,css}'].each do |f|
+    get "/#{f}" do
+      send_file "./#{f}"
+    end
+  end
+
   get '/' do
     erb :home
   end
