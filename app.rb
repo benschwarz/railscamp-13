@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'sinatra'
 require 'sinatra/sequel'
 require 'json'
@@ -94,24 +96,21 @@ class Thirteen < Sinatra::Base
   end
 
   post '/register' do
-    content_type 'text/plain'
-    JSON.pretty_generate(params)
+    STDERR.puts params.inspect
+    # entrant = Entrant.new(params[:entrant])
+    # if entrant.valid?
+    #   entrant.save
+    #   redirect "/register/thanks"
+    # else
+    #   @errors = entrant.errors
+    #   haml :register
+    # end
+    redirect "/✌"
   end
 
-  # post '/register' do
-  #   entrant = Entrant.new(params[:entrant])
-  #   if entrant.valid?
-  #     entrant.save
-  #     redirect "/register/thanks"
-  #   else
-  #     @errors = entrant.errors
-  #     haml :register
-  #   end
-  # end
-
-  # get '/thanks' do
-  #   haml :thanks
-  # end
+  get '/✌' do
+    erb :thanks
+  end
 
 end
 end
