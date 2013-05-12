@@ -16,9 +16,22 @@
     #entrant_tee_cut_male:checked ~ #entrant_tee_size_male { display: block; }
   #entrant_tee_cut_female:checked ~ label[for="entrant_tee_size_female"],
     #entrant_tee_cut_female:checked ~ #entrant_tee_size_female { display: block; }
+
+  .errors { color: #fee; margin: 1em 0; }
 </style>
 
 <h1>Register</h1>
+
+<% if @errors %>
+  <div class="errors">
+    <p>There was an error with your details. Give it another go.</p>
+    <ol>
+      <% for message in @errors.full_messages %>
+        <li><%= message %></li>
+      <% end %>
+    </ol>
+  </div>
+<% end %>
 
 <p>Here's a big explanation of the ballot registration process.</p>
 
@@ -59,7 +72,7 @@
     <label>Country<input name='entrant[cc_country]' required autocompletetype="country-name" data-pin="address_country"></label>
   </fieldset>
   <fieldset>
-    <button>Register</button>
+    <button data-busy-text="Registering...">Register</button>
   </fieldset>
 </form>
 

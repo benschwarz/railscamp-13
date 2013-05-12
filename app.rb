@@ -18,25 +18,51 @@ class Thirteen < Sinatra::Base
 
   register Sinatra::SequelExtension
 
-  # migration "create the entrants table" do
-  #   database.create_table :entrants do
-  #     primary_key :id
-  #     Time :created_at, null: false
-  #     String :name, null: false
-  #     TrueClass :chosen, null: false, default: false
-  #   end
-  # end
+  migration "create the entrants table" do
+    database.create_table :entrants do
+      primary_key :id
+      Time :created_at, null: false
+      String :name, null: false
+      String :email, null: false
+      String :tee_cut, null: false
+      String :tee_size_male
+      String :tee_size_female
+      String :cc_name, null: false
+      String :cc_address, null: false
+      String :cc_city, null: false
+      String :cc_post_code, null: false
+      String :cc_state, null: false
+      String :cc_country, null: false
+      String :card_token, null: false
+      String :ip_address, null: false
+    end
+  end
 
-  # class Entrant < Sequel::Model
-  #   set_allowed_columns :name
-  #   def validate
-  #     super
-  #     errors.add(:field, 'is empty') if !name || name.empty?
-  #   end
-  #   def before_save
-  #     self.created_at = Time.now.utc
-  #   end
-  # end
+  class Entrant < Sequel::Model
+    PUBLIC_ATTRS = [
+      :name, :email, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
+      :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
+      :card_token, :ip_address
+    ]
+
+    set_allowed_columns *PUBLIC_ATTRS
+    plugin :validation_helpers
+
+    def validate
+      super
+      validates_presence PUBLIC_ATTRS - [:tee_size_male, :tee_size_female]
+    end
+    def before_save
+      # Front-end form submits unneccesary tee size fields
+      case self.tee_cut
+      when "male"
+        self.tee_size_female = nil
+      when "female"
+        self.tee_size_male = nil
+      end
+      self.created_at = Time.now.utc
+    end
+  end
 
   configure :development do
     set :pin, {
@@ -97,15 +123,14 @@ class Thirteen < Sinatra::Base
 
   post '/register' do
     STDERR.puts params.inspect
-    # entrant = Entrant.new(params[:entrant])
-    # if entrant.valid?
-    #   entrant.save
-    #   redirect "/register/thanks"
-    # else
-    #   @errors = entrant.errors
-    #   haml :register
-    # end
-    redirect "/✌"
+    entrant = Entrant.new(params[:entrant])
+    if entrant.valid?
+      entrant.save
+      redirect "/✌"
+    else
+      @errors = entrant.errors
+      haml :register
+    end
   end
 
   get '/✌' do

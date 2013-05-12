@@ -16,15 +16,26 @@
 
       e.preventDefault();
 
-      var form = e.currentTarget,
-          card = pinCardAttributes(form);
+      var submitButton = $("button", form),
+          originalSubmitText = submitButton.textContent;
+      submitButton.textContent = submitButton.dataset.busyText;
+
+      // Clear any existing errors messages (from Pin or otherwise)
+      var errors = $(".errors", form);
+      if (errors) {
+        errors.parentNode.removeChild(errors);
+        errors = undefined;
+      }
+
+      var card = pinCardAttributes(form);
 
       Pin.createToken(card, function(response) {
         if (response.response) {
           appendCardToken(form, response);
           form.submit();
         } else {
-          showPinError(response.error_description, response.messages);
+          submitButton.textContent = originalSubmitText;
+          showPinError(form, response.error_description, response.messages);
         }
       });
 
@@ -67,9 +78,24 @@
     appendHiddenInput('entrant[ip_address]', response.ip_address);
   }
 
-  function showPinError(description, messages) {
+  function showPinError(form, description, messages) {
     console.log(description, messages);
-    // TODO
+
+    var errors = document.createElement('div');
+    errors.className = "errors";
+    errors.innerHTML = "<p>There were problems processing your credit card details. Please fix them and try again.</p>"+
+                       "<ol></ol>" +
+                       "<p>Please fix them and try again.</p>";
+
+    var errorList = $("ol", errors);
+    messages.forEach(function(message) {
+      var error = document.createElement('li');
+      error.textContent = message.message;
+      errorList.appendChild(error);
+    });
+
+    var submitFieldset = $("button", form).parentNode;
+    submitFieldset.parentNode.insertBefore(errors, submitFieldset);
   }
 
 })();
