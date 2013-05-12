@@ -43,6 +43,8 @@
         var expiry = input.value.split("/");
         card.expiry_month = expiry[0];
         card.expiry_year = expiry[1];
+        if (card.expiry_year.length == 2)
+          card.expiry_year = "20" + card.expiry_year;
       }
 
       // Everything else passes through directly

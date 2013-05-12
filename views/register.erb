@@ -48,9 +48,9 @@
   <fieldset>
     <h2>Payment</h2>
     <p>Payment of $123 must be by credit card, but will be only be charged if you win the ballot. You’ll receive an email letting you know if you got a ticket, along with a receipt for your purchase.</p>
-    <label>Name on card<input name='entrant[cc_name]' required autocompletetype="cc-name" data-pin="name"></label>
-    <label>Credit card number<input type="text" autocompletetype="cc-number" format="\d+" placeholder="4242424242424242" required data-pin="number"></label>
-    <label>Expiry (MM/YYYY)<input type="text" autocompletetype="cc-expiry" format="\d\d/\d\d\d\d" placeholder="01/2020" required data-pin="expiry"></label>
+    <label>Name on card<input name='entrant[cc_name]' required autocompletetype="cc-name" format="\w+\s\w+" pattern="\w+\s\w+" data-pin="name"></label>
+    <label>Credit card number<input type="text" autocompletetype="cc-number" format="\d{16}" pattern="\d{16}" placeholder="4242424242424242" required data-pin="number"></label>
+    <label>Expiry (MM/YYYY)<input type="text" autocompletetype="cc-expiry" format="\d{2}/(\d{2}|\d{4})" pattern="\d{2}/(\d{2}|\d{4})" placeholder="01/2020" required data-pin="expiry"></label>
     <label>CVC<input type="text" autocompletetype="cc-csc" placeholder="123" required autocomplete="off" data-pin="cvc"></label>
     <label>Address<input name='entrant[cc_address]' required autocompletetype="street-address" data-pin="address_line1"></label>
     <label>City<input name='entrant[cc_city]' required autocompletetype="city" data-pin="address_city"></label>
