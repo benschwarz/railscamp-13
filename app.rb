@@ -60,9 +60,9 @@ class Thirteen < Sinatra::Base
     def tee_size_default
       TEE_SIZE_DEFAULT
     end
-    def ensure_host!(host, secure, status)
-      unless request.host == host && request.secure == secure
-        redirect "#{secure ? 'https' : 'http'}://#{host}#{request.path}", status
+    def ensure_host!(host, scheme, status)
+      unless request.host == host && request.scheme == scheme
+        redirect "#{scheme}://#{host}#{request.path}", status
       end
     end
   end
@@ -71,9 +71,9 @@ class Thirteen < Sinatra::Base
     before do
       case request.path
       when "/register"
-        ensure_host! "secure.ruby.org.au", true, 302
+        ensure_host! "secure.ruby.org.au", 'https', 302
       else
-        ensure_host! "railscamp-13.herokuapp.com", false, 301
+        ensure_host! "railscamp-13.herokuapp.com", 'http', 301
       end
     end
   end
