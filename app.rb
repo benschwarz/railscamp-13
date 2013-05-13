@@ -38,11 +38,15 @@ class Thirteen < Sinatra::Base
     end
   end
 
+  migration "add diet column" do
+    database.add_column :entrants, :dietary_reqs, String, text: true
+  end
+
   class Entrant < Sequel::Model
     PUBLIC_ATTRS = [
       :name, :email, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
       :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
-      :card_token, :ip_address
+      :card_token, :ip_address, :dietary_reqs
     ]
 
     set_allowed_columns *PUBLIC_ATTRS
@@ -50,7 +54,7 @@ class Thirteen < Sinatra::Base
 
     def validate
       super
-      validates_presence PUBLIC_ATTRS - [:tee_size_male, :tee_size_female]
+      validates_presence PUBLIC_ATTRS - [:tee_size_male, :tee_size_female, :dietary_reqs]
     end
     def before_save
       # Front-end form submits unneccesary tee size fields
