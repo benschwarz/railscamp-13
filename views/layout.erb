@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title><%= "#{@page_title} - " if @page_title %>Railscamp XII, Melbourne: 21 — 24th of June</title>
-  <link rel="stylesheet" href="components/normalize-css/normalize.css">
-  <link rel="stylesheet" href="css/screen.css">
-
-  <script src="js/vendor/modernizr.min.js" async></script>
-  <script src="components/prefix-free/prefixfree.min.js"></script>
-  <script src="js/main.js" async></script>
+  <link rel="stylesheet" href="/css/screen.css">
+  <script src="/js/vendor/modernizr.min.js" async></script>
+  <script src="/components/prefix-free/prefixfree.min.js"></script>
+  <script src="/js/main.js" async></script>
   <script src='https://<%= settings.pin[:api_host] %>/pin.js' type='text/javascript'></script>
   <script>Pin.setPublishableKey('<%= settings.pin[:publishable_key] %>');</script>
 </head>
