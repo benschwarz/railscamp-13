@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "normalize-css": "~2.1.1",
-    "prefix-free": "latest"
+    "prefix-free": "latest",
+    "requirejs": "latest",
+    "requirejs-domready": "latest"
   }
 }

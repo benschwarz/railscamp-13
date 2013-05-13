@@ -44,9 +44,9 @@ class Thirteen < Sinatra::Base
 
   class Entrant < Sequel::Model
     PUBLIC_ATTRS = [
-      :name, :email, :diet, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
+      :name, :email, :dietary_reqs, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
       :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
-      :card_token, :ip_address, :dietary_reqs
+      :card_token, :ip_address
     ]
 
     set_allowed_columns *PUBLIC_ATTRS
@@ -72,14 +72,14 @@ class Thirteen < Sinatra::Base
   configure :development do
     set :pin, {
       publishable_key: ENV['PIN_TEST_PUBLISHABLE_KEY'],
-      api_host: 'test-api.pin.net.au'
+      api: 'test'
     }
   end
 
   configure :production do
     set :pin, {
       publishable_key: ENV['PIN_LIVE_PUBLISHABLE_KEY'],
-      api_host: 'api.pin.net.au'
+      api: 'live'
     }
   end
 
@@ -134,7 +134,7 @@ class Thirteen < Sinatra::Base
       redirect "/✌"
     else
       @errors = entrant.errors
-      haml :register
+      erb :register
     end
   end
 
