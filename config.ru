@@ -5,4 +5,7 @@ require "./app"
 #   use Rack::SSL
 # end
 
+require 'rack/deflater'
+use Rack::Deflater
+
 run Railscamp::Thirteen
