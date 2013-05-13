@@ -44,7 +44,7 @@ class Thirteen < Sinatra::Base
 
   class Entrant < Sequel::Model
     PUBLIC_ATTRS = [
-      :name, :email, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
+      :name, :email, :diet, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
       :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
       :card_token, :ip_address, :dietary_reqs
     ]
@@ -56,6 +56,7 @@ class Thirteen < Sinatra::Base
       super
       validates_presence PUBLIC_ATTRS - [:tee_size_male, :tee_size_female, :dietary_reqs]
     end
+
     def before_save
       # Front-end form submits unneccesary tee size fields
       case self.tee_cut

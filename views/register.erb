@@ -3,25 +3,6 @@
   @page_title = "Register"
 %>
 
-<style>
-  form { text-align: left; max-width: 500px; margin: 0 auto; }
-  fieldset { margin: 0; padding: 0; border: none; }
-  label, input, textarea, div { display: block; }
-  label { margin-bottom: 1em; }
-  input[type="radio"], input[type="radio"] + label { display: inline; }
-  input[type="radio"] + label { margin-left: .5em; }
-
-  .cut .size { display: none; }
-  #entrant_tee_cut_male:checked ~ label[for="entrant_tee_size_male"],
-    #entrant_tee_cut_male:checked ~ #entrant_tee_size_male { display: block; }
-  #entrant_tee_cut_female:checked ~ label[for="entrant_tee_size_female"],
-    #entrant_tee_cut_female:checked ~ #entrant_tee_size_female { display: block; }
-
-  .errors { color: #fee; margin: 1em 0; }
-</style>
-
-<h1>Register</h1>
-
 <% if @errors %>
   <div class="errors">
     <p>There was an error with your details. Give it another go.</p>
@@ -33,47 +14,132 @@
   </div>
 <% end %>
 
-<p>Here's a big explanation of the ballot registration process.</p>
-
-<form method="post">
-  <fieldset>
-    <h2>You</h2>
-    <label>Name<input name="entrant[name]" required autocompletetype="name"></label>
-    <label>Email<input name="entrant[email]" type="email" required autocompletetype="email"></label>
-    <label>Dietary or other requirements (optional)<textarea name="entrant[dietary_reqs]"></textarea></label>
-  </fieldset>
-  <fieldset>
-    <h2>Your Tee</h2>
-    <div class="cut">
-      Cut
-      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_male"><label for="entrant_tee_cut_male">Male</label>
-      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_female"><label for="entrant_tee_cut_female">Female</label>
-      <label class="size" for="entrant_tee_size_male">Size</label>
-      <select class="size" name="entrant[tee_size_male]" id="entrant_tee_size_male">
-        <% for s in male_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
-      </select>
-      <label class="size" for="entrant_tee_size_female">Size</label>
-      <select class="size" name="entrant[tee_size_female]" id="entrant_tee_size_female">
-        <% for s in female_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
-      </select>
+<section class="grid" role="main">
+  <% if @errors %>
+    <div class="errors">
+      <h1>Oh snap! Something isn't quite right</h1>
+      <p>There was an error with your details. Give it another go.</p>
+      <ol>
+        <% for message in @errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ol>
     </div>
-  </fieldset>
-  <fieldset>
-    <h2>Payment</h2>
-    <p>Payment of $123 must be by credit card, but will be only be charged if you win the ballot. You’ll receive an email letting you know if you got a ticket, along with a receipt for your purchase.</p>
-    <label>Name on card<input name='entrant[cc_name]' required autocompletetype="cc-name" format="\w+\s\w+" pattern="\w+\s\w+" data-pin="name"></label>
-    <label>Credit card number<input type="text" autocompletetype="cc-number" format="\d{16}" pattern="\d{16}" placeholder="4242424242424242" required data-pin="number"></label>
-    <label>Expiry (MM/YYYY)<input type="text" autocompletetype="cc-expiry" format="\d{2}/(\d{2}|\d{4})" pattern="\d{2}/(\d{2}|\d{4})" placeholder="01/2020" required data-pin="expiry"></label>
-    <label>CVC<input type="text" autocompletetype="cc-csc" placeholder="123" required autocomplete="off" data-pin="cvc"></label>
-    <label>Address<input name='entrant[cc_address]' required autocompletetype="street-address" data-pin="address_line1"></label>
-    <label>City<input name='entrant[cc_city]' required autocompletetype="city" data-pin="address_city"></label>
-    <label>Postcode<input name='entrant[cc_post_code]' required autocompletetype="postal-code" data-pin="address_postcode"></label>
-    <label>State<input name='entrant[cc_state]' required autocompletetype="state" data-pin="address_state"></label>
-    <label>Country<input name='entrant[cc_country]' required autocompletetype="country-name" data-pin="address_country"></label>
-  </fieldset>
-  <fieldset>
-    <button data-busy-text="Registering...">Register</button>
-  </fieldset>
-</form>
+  <% else %>
+    <h1>Getting a ticket hasn’t always been easy —</h1>
+    <h2>We’re trying something new to help even up the odds</h2>
 
-<p>Payments generously handled by <a href="https://pin.net.au/">Pin Payments</a></p>
+    <p>This time, instead of first come, first served, we'll be randomly allocating tickets to give everyone an equal chance to attend (whether they're in an NBN area or not.)
+
+    <p>To register, fill your personal and payment details in below. Your details will be stored securely by pin.net.au. Tickets will be randomly allocated, successful railscampers will be charged at that time and notified.</p>
+
+    <p>If you're unsuccessful, you won't be charged, pin will conveniently forget your payment details, and we'll email you the bad news.</p>
+  <% end %>
+
+  <form method="post">
+    <div class="ticket-info">
+      <div class="price">$260</div>
+      <div class="price-buys"></div>
+    </div>
+
+    <h2>Personal details</h2>
+    <fieldset>
+      <label for="name">Name</label>
+      <input id="name" name="entrant[name]" required autocompletetype="name">
+    </fieldset>
+
+    <fieldset>
+      <label for="email">Email</label>
+      <input id="email" name="entrant[email]" type="email" required autocompletetype="email">
+    </fieldset>
+
+    <fieldset>
+      <label for="diet">Dietary or other requirements</label>
+      <textarea id="diet" name="entrant[dietary_reqs]"></textarea>
+    </fieldset>
+
+    <h2>T-Shirt sizing</h2>
+    <fieldset>
+      <label for="entrant_tee_cut_male">Male</label>
+      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_male">
+
+      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_female">
+      <label for="entrant_tee_cut_female">Female</label>
+
+    </fieldset>
+
+    <fieldset>
+        <label class="size" for="entrant_tee_size_male">Size</label>
+
+        <select class="size" name="entrant[tee_size_male]" id="entrant_tee_size_male">
+          <% for s in male_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
+        </select>
+        <label class="size" for="entrant_tee_size_female">Size</label>
+        <select class="size" name="entrant[tee_size_female]" id="entrant_tee_size_female">
+          <% for s in female_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
+        </select>
+      </div>
+    </fieldset>
+
+    <h2>Card details</h2>
+
+    <fieldset>
+      <label for="cc-name">Name on card</label>
+      <input id="cc-name" name='entrant[cc_name]' required autocompletetype="cc-name" format="\w+\s\w+" pattern="  \w+\s\w+" data-pin="name">
+    </fieldset>
+
+    <fieldset>
+      <label for="cc-number">Credit card number</label>
+      <input id="cc-number" type="text" autocompletetype="cc-number" format="\d{16}" pattern="\d{16}" placeholder="4242424242424242" required data-pin="number">
+    </fieldset>
+
+    <fieldset>
+      <label for="cc-expiry">Expiry (MM/YYYY)</label>
+      <input id="cc-expiry" type="text" autocompletetype="cc-expiry" format="\d{2}/(\d{2}|\d{4})" pattern="\d{2}/(\d{2}|\d{4})" placeholder="01/2020" required data-pin="expiry">
+    </fieldset>
+
+    <fieldset>
+      <label for="cc-cvc">CVC</label>
+      <input id="cc-cvc" type="text" autocompletetype="cc-csc" placeholder="123" required autocomplete="off" data-pin="cvc">
+    </fieldset>
+
+    <fieldset>
+      <label for="cc-address">Address</label>
+      <input id="cc-address" name='entrant[cc_address]' required autocompletetype="street-address" data-pin="address_line1">
+    </fieldset>
+
+    <fieldset>
+      <label for="cc-city">City</label>
+      <input id="cc-city" name='entrant[cc_city]' required autocompletetype="city" data-pin="address_city">
+    </fieldset>
+
+    <fieldset>
+      <label for="cc-postcode">Postcode</label>
+      <input id="cc-postcode" name='entrant[cc_post_code]' required autocompletetype="postal-code" data-pin="address_postcode">
+    </fieldset>
+
+    <fieldset>
+      <label for="cc-state">State</label>
+      <input id="cc-state" name='entrant[cc_state]' required autocompletetype="state" data-pin="address_state">
+    </fieldset>
+
+    <fieldset>
+      <label for="cc-country">Country</label>
+      <input id="cc-country" name='entrant[cc_country]' required autocompletetype="country-name" data-pin="address_country">
+    </fieldset>
+
+    <fieldset class="registration">
+      <div class="registration-agreement">
+        This card will be billed $260 on May 22nd,<br>
+        <em>only</em> if you’re successful in the ballot.
+      </div>
+      <button class="register-button" data-busy-text="Registering...">Enter the ballot</button>
+    </fieldset>
+  </form>
+</section>
+
+<footer role="contentinfo">
+  <div class="grid">
+    <a href="https://pin.net.au/" title="Payments generously handled by Pin"><img src="/images/pin.svg"></a>
+  </div>
+</footer>
