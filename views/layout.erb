@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="<%= @page_class %>">
+<html lang="en" class="<%= @page_class %> wf-loading">
 <head>
   <meta charset="UTF-8">
   <title><%= "#{@page_title} - " if @page_title %>Railscamp XII, Melbourne: 21 — 24th of June</title>
@@ -12,5 +12,13 @@
 </head>
 <body>
   <%= yield %>
+  <script>
+    Modernizr.load([{
+      load: '//use.typekit.net/rey0bbe.js',
+      complete: function () {
+        try{Typekit.load();}catch(e){}
+      }
+    }]);
+  </script>
 </body>
 </html>

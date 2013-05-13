@@ -1,17 +1,29 @@
 <%
   @page_class = "home"
+  @prerender = "register"
 %>
 
-<div class="event-info">
-  <h1>Rails<br> camp</h1>
-  <span class="number">XII</span>
-  <span class="location">Melbourne</span>
-  <time>June 21 — 24</time>
+<div class="event-info grid">
+  <div class="monogram">
+    <h1>Rails<br> camp</h1>
+
+    <img class="icon" src="images/icons.svg" alt="Ruby + Tent + Refreshing juice">
+  </div>
+
+  <div class="event-details">
+    <div class="event-name">
+      <span class="number">XIII</span>
+      <span class="location">Melbourne</span>
+    </div>
+
+    <time class="dates">June 21 — 24</time>
+  </div>
+
+  <a class="button register" href="register">Register</a>
 </div>
 
-<footer class="sponsors">
-  <article class="sponsor">Company name</article>
-  <article class="sponsor">Company Name</article>
-  <article class="sponsor">Company Name</article>
-  <a href="mailto:ben.schwarz@gmail.com" class="empty">Become a sponsor</div>
+<footer role="contentinfo">
+  <div class="grid">
+    <a href="mailto:ben.schwarz@gmail.com?subject=Railscamp sponsorship" class="sponsor">Become a sponsor</div>
+  </div>
 </footer>

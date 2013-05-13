@@ -3,16 +3,22 @@
   @page_title = "Register"
 %>
 
-<% if @errors %>
-  <div class="errors">
-    <p>There was an error with your details. Give it another go.</p>
-    <ol>
-      <% for message in @errors.full_messages %>
-        <li><%= message %></li>
-      <% end %>
-    </ol>
+<header class="event-info grid" role="banner">
+  <div class="monogram">
+    <h1>Rails<br> camp</h1>
+
+    <img class="icon" src="images/icons.svg" alt="Ruby + Tent + Refreshing juice">
   </div>
-<% end %>
+
+  <div class="event-details">
+    <div class="event-name">
+      <span class="number">XIII</span>
+      <span class="location">Melbourne</span>
+    </div>
+
+    <time class="dates">June 21 — 24</time>
+  </div>
+</header>
 
 <section class="grid" role="main">
   <% if @errors %>
