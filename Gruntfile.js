@@ -40,9 +40,9 @@ module.exports = function(grunt) {
     uglify: {
       rc13: {
         options: {
-          compress: false,
-          mangle: false,
-          beautify: true
+          // compress: false,
+          // mangle: false,
+          // beautify: true
         },
         files: {
           'public/js/rc13.js': ['components/requirejs/require.js', 'build/rc13.js']
