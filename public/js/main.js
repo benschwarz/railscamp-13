@@ -84,8 +84,7 @@
     var errors = document.createElement('div');
     errors.className = "errors";
     errors.innerHTML = "<p>There were problems processing your credit card details. Please fix them and try again.</p>"+
-                       "<ol></ol>" +
-                       "<p>Please fix them and try again.</p>";
+                       "<ol></ol>";
 
     var errorList = $("ol", errors);
     messages.forEach(function(message) {
