@@ -490,6 +490,11 @@ input, textarea {
   input:focus, textarea:focus {
     background: rgba(255, 255, 255, 0.2); }
 
+select,
+input[type='radio'] {
+  width: auto;
+  margin-top: .4em; }
+
 .register-button {
   font-size: 1.5em;
   background: #5B5B5B; }
@@ -501,7 +506,12 @@ input[type="radio"] + label {
   margin-left: .5em; }
 
 .t-shirt .size {
-  display: none; }
+  display: none;
+  width: auto;
+  margin-left: 5%; }
+
+.t-shirt .tee {
+  clear: both; }
 
 #entrant_tee_cut_male:checked ~ label[for="entrant_tee_size_male"],
 #entrant_tee_cut_male:checked ~ #entrant_tee_size_male {
