@@ -40,10 +40,7 @@ module.exports = function(grunt) {
     uglify: {
       rc13: {
         options: {
-          beautify: {
-            beautify: true,
-            indent_level: 0
-          }
+          sourceMap: "public/js/rc13.js.map"
         },
         files: {
           'public/js/rc13.js': ['components/requirejs/require.js', 'build/rc13.js']
