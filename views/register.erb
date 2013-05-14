@@ -69,19 +69,19 @@
     <p>You get a t-shirt just for attending. Go you!</p>
 
     <fieldset class="t-shirt">
-      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_male">
+      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_male" autocomplete="off">
       <label for="entrant_tee_cut_male">Male</label>
 
-      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_female">
+      <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_female" autocomplete="off">
       <label for="entrant_tee_cut_female">Female</label>
 
       <label class="size" for="entrant_tee_size_male">Size</label>
-      <select class="size" name="entrant[tee_size_male]" id="entrant_tee_size_male">
+      <select class="size" name="entrant[tee_size_male]" id="entrant_tee_size_male" autocomplete="off">
         <% for s in male_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
       </select>
 
       <label class="size" for="entrant_tee_size_female">Size</label>
-      <select class="size" name="entrant[tee_size_female]" id="entrant_tee_size_female">
+      <select class="size" name="entrant[tee_size_female]" id="entrant_tee_size_female" autocomplete="off">
         <% for s in female_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
       </select>
     </fieldset>
