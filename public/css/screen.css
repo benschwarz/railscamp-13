@@ -199,7 +199,7 @@ figure {
  * Define consistent border, margin, and padding.
  */
 fieldset {
-  border: 1px solid silver;
+  border: 1px solid #c0c0c0;
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em; }
 
@@ -336,7 +336,7 @@ table {
 
 .button, .register-button {
   display: inline-block;
-  padding: 0.2em 0.7em;
+  padding: .2em .7em;
   background: black;
   color: white;
   font-weight: 700;
@@ -447,7 +447,7 @@ body {
     font-size: .8em; }
 
 form {
-  padding: 2em 1em 0.7em 1em;
+  padding: 2em 1em .7em 1em;
   background: black;
   border-radius: 3px; }
 
@@ -466,7 +466,7 @@ form .registration {
 
 fieldset {
   margin: 0 0 1em 0;
-  padding: 0.7em 1em;
+  padding: .7em 1em;
   clear: both;
   border: none;
   background: #5B5B5B; }
@@ -474,7 +474,7 @@ fieldset {
 label {
   float: left;
   width: 30%;
-  padding: 0.2em 1em 0.2em 0.2em;
+  padding: .2em 1em .2em .2em;
   font-weight: bold; }
 
 input, textarea {
@@ -485,7 +485,7 @@ input, textarea {
   color: white;
   font-weight: bold;
   background: rgba(255, 255, 255, 0.1);
-  transition: all 0.25s;
+  transition: all .25s;
   outline: 0; }
   input:focus, textarea:focus {
     background: rgba(255, 255, 255, 0.2); }
@@ -537,5 +537,18 @@ footer[role='contentinfo'] {
 
 .sponsor {
   display: block;
-  padding: 1em 0;
+  padding: 1em 0 2em;
   text-decoration: none; }
+  .sponsor.pin {
+    text-align: center;
+    color: #ccc;
+    font-size: .9em; }
+    .sponsor.pin a {
+      opacity: .6;
+      transition: opacity .25s; }
+      .sponsor.pin a:hover {
+        opacity: 1; }
+      .sponsor.pin a img {
+        vertical-align: middle;
+        padding-left: .1em;
+        padding-bottom: .1em; }

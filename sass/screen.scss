@@ -170,6 +170,17 @@ footer[role='contentinfo'] { display: table-footer-group; }
 
 .sponsor {
   display: block;
-  padding: 1em 0;
+  padding: 1em 0 2em;
   text-decoration: none;
+  &.pin {
+    text-align: center;
+    color: #ccc;
+    font-size: .9em;
+    a {
+      opacity: .6;
+      transition: opacity .25s;
+      &:hover { opacity: 1; }
+      img { vertical-align: middle; padding-left: .2em; padding-bottom: .1em; }
+    }
+  }
 }
