@@ -3,22 +3,7 @@
   @page_title = "Register"
 %>
 
-<header class="event-info grid" role="banner">
-  <a class="monogram" href="/">
-    <h1>Rails<br> camp</h1>
-
-    <img class="icon" src="images/icons.svg" alt="Ruby + Tent + Refreshing juice">
-  </a>
-
-  <div class="event-details">
-    <div class="event-name">
-      <span class="number">XIII</span>
-      <span class="location">Melbourne</span>
-    </div>
-
-    <time class="dates">June 21 — 24</time>
-  </div>
-</header>
+<%= partial :_header_banner %>
 
 <section class="grid" role="main">
   <% if @errors %>

@@ -93,6 +93,9 @@ class Thirteen < Sinatra::Base
     def tee_size_default
       TEE_SIZE_DEFAULT
     end
+    def partial(name)
+      erb name, layout: false
+    end
     def ensure_host!(host, scheme, status)
       unless request.host == host && request.scheme == scheme
         redirect "#{scheme}://#{host}#{request.path}", status

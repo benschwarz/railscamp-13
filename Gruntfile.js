@@ -61,7 +61,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('javascript', ['requirejs:rc13', 'uglify:rc13']);
 
-  grunt.registerTask('default', ['sass']);
+  grunt.registerTask('default', ['sass', 'javascript']);
   grunt.registerTask('dev', ['connect', 'watch']);
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);

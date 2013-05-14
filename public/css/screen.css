@@ -420,16 +420,16 @@ body {
     margin-top: 2em;
     font-size: 2em; }
 
-.register [role='banner'] {
+.event-info[role='banner'] {
   position: relative;
   overflow: hidden;
   margin: 2em auto; }
-  .register [role='banner'] .monogram h1 {
+  .event-info[role='banner'] .monogram h1 {
     font-size: 2.6em;
     margin-right: .7em; }
-  .register [role='banner'] .monogram h1, .register [role='banner'] .event-details {
+  .event-info[role='banner'] .monogram h1, .event-info[role='banner'] .event-details {
     display: inline-block; }
-  .register [role='banner'] .icon {
+  .event-info[role='banner'] .icon {
     position: absolute;
     top: 0;
     right: 0; }
@@ -550,5 +550,5 @@ footer[role='contentinfo'] {
         opacity: 1; }
       .sponsor.pin a img {
         vertical-align: middle;
-        padding-left: .1em;
+        padding-left: .2em;
         padding-bottom: .1em; }
