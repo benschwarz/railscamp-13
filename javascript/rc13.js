@@ -1,13 +1,13 @@
-define(["modernizr", "prefixfree", "pages/register"], function(modernizr, prefixfree, registerPage) {
+define(["modernizr", "prefixfree", "services/typekit", "services/google_analytics", "pages/register"],
+  function(modernizr, prefixfree, typekit, googleAnalytics, registerPage) {
 
-  // Ghetto router
-  if (window.location.pathname == '/register') {
-    registerPage();
+    typekit();
+    googleAnalytics();
+
+    // Ghetto router
+    if (window.location.pathname == '/register') {
+      registerPage();
+    }
+
   }
-
-  // Initialize the fonts
-  require(["https://use.typekit.net/rey0bbe.js"], function() {
-    Typekit.load();
-  });
-
-});
+);
