@@ -1,8 +1,8 @@
 require.config({
   paths: {
-    modernizr:   '../components/modernizr/modernizr',
     prefixfree:  '../components/prefix-free/prefixfree',
     domReady:    '../components/requirejs-domready/domReady',
+    modernizr:   'vendor/modernizr.min',
     pinjs:       'vendor/pinjs'
   },
   shim: {
