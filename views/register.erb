@@ -4,11 +4,11 @@
 %>
 
 <header class="event-info grid" role="banner">
-  <div class="monogram">
+  <a class="monogram" href="/">
     <h1>Rails<br> camp</h1>
 
     <img class="icon" src="images/icons.svg" alt="Ruby + Tent + Refreshing juice">
-  </div>
+  </a>
 
   <div class="event-details">
     <div class="event-name">
@@ -45,7 +45,7 @@
   <form method="post">
     <div class="ticket-info">
       <div class="price">$260</div>
-      <div class="price-buys"></div>
+      <div class="price-buys">Includes accomodation &amp; meals</div>
     </div>
 
     <h2>Personal details</h2>
@@ -65,26 +65,22 @@
     </fieldset>
 
     <h2>T-Shirt sizing</h2>
-    <fieldset>
+    <fieldset class="t-shirt">
       <label for="entrant_tee_cut_male">Male</label>
       <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_male">
 
       <input name="entrant[tee_cut]" type="radio" value="male" id="entrant_tee_cut_female">
       <label for="entrant_tee_cut_female">Female</label>
 
-    </fieldset>
+      <label class="size" for="entrant_tee_size_male">Size</label>
+      <select class="size" name="entrant[tee_size_male]" id="entrant_tee_size_male">
+        <% for s in male_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
+      </select>
 
-    <fieldset>
-        <label class="size" for="entrant_tee_size_male">Size</label>
-
-        <select class="size" name="entrant[tee_size_male]" id="entrant_tee_size_male">
-          <% for s in male_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
-        </select>
-        <label class="size" for="entrant_tee_size_female">Size</label>
-        <select class="size" name="entrant[tee_size_female]" id="entrant_tee_size_female">
-          <% for s in female_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
-        </select>
-      </div>
+      <label class="size" for="entrant_tee_size_female">Size</label>
+      <select class="size" name="entrant[tee_size_female]" id="entrant_tee_size_female">
+        <% for s in female_tee_sizes %><option value="<%= s %>" <%= "selected" if s == tee_size_default %>><%= s %></option><% end %>
+      </select>
     </fieldset>
 
     <h2>Card details</h2>
@@ -145,7 +141,7 @@
 </section>
 
 <footer role="contentinfo">
-  <div class="grid">
+  <div class="sponsor grid">
     <a href="https://pin.net.au/" title="Payments generously handled by Pin"><img src="/images/pin.svg"></a>
   </div>
 </footer>

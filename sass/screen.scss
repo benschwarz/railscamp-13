@@ -38,6 +38,7 @@ body {
 }
 
 [role='banner'] { color: black; }
+[role='main'] { margin-top: 5em; }
 
 .monogram {
   h1 {
@@ -91,6 +92,13 @@ body {
 }
 
 /* Form */
+
+.ticket-info {
+  float: right;
+
+  .price { margin: 0; line-height: 1; font-size: 2em; font-weight: 700;  }
+  .price-buys { font-size: .8em; }
+}
 form { padding: .7em 1em; background: black; border-radius: 3px; }
 
 form, fieldset, input, textarea, .register-button { border-radius: 3px; }
@@ -104,6 +112,7 @@ form {
 fieldset {
   margin: 0 0 1em 0;
   padding: .7em 1em;
+  clear: both;
   border: none;
   background: #5B5B5B;
 }
@@ -135,7 +144,7 @@ input, textarea {
 input[type="radio"], input[type="radio"] + label { display: inline; }
 input[type="radio"] + label { margin-left: .5em; }
 
-.cut .size { display: none; }
+.t-shirt .size { display: none; }
 
 #entrant_tee_cut_male:checked ~ label[for="entrant_tee_size_male"],
 #entrant_tee_cut_male:checked ~ #entrant_tee_size_male { display: block; }
