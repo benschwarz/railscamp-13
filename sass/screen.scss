@@ -95,17 +95,19 @@ body {
 
 .ticket-info {
   float: right;
+  margin-bottom: .5em;
 
   .price { margin: 0; line-height: 1; font-size: 2em; font-weight: 700;  }
   .price-buys { font-size: .8em; }
 }
-form { padding: .7em 1em; background: black; border-radius: 3px; }
+form { padding: 2em 1em .7em 1em; background: black; border-radius: 3px; }
 
 form, fieldset, input, textarea, .register-button { border-radius: 3px; }
 
 form {
-  h1, h2 { margin-bottom: .3em; }
+  h1, h2 { margin-bottom: .3em; line-height: 1; }
   fieldset + h2 { margin-top: 2em; }
+  h2 + p { margin-top: 0; }
   .registration { background: black; }
 }
 
