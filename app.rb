@@ -120,7 +120,7 @@ class Thirteen < Sinatra::Base
   end
 
   post '/register' do
-    STDERR.puts params.inspect
+    STDERR.puts JSON.generate(params)
     entrant = Entrant.new(params[:entrant])
     if entrant.valid?
       entrant.save
