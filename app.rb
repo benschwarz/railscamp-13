@@ -71,14 +71,14 @@ class Thirteen < Sinatra::Base
 
   configure :development do
     set :pin, {
-      publishable_key: ENV['PIN_TEST_PUBLISHABLE_KEY'],
+      publishable_key: ENV['PIN_TEST_PUBLISHABLE_KEY'] || raise("Missing PIN_TEST_PUBLISHABLE_KEY env var"),
       api: 'test'
     }
   end
 
   configure :production do
     set :pin, {
-      publishable_key: ENV['PIN_LIVE_PUBLISHABLE_KEY'],
+      publishable_key: ENV['PIN_LIVE_PUBLISHABLE_KEY'] || raise("Missing PIN_LIVE_PUBLISHABLE_KEY env var"),
       api: 'live'
     }
   end
