@@ -7,8 +7,8 @@ require 'json'
 module Railscamp
 class Thirteen < Sinatra::Base
 
-  MALE_TEE_SIZES = %w( S M L 2XL )
-  FEMALE_TEE_SIZES = %w( XS S M L 2XL )
+  MALE_TEE_SIZES = %w( S M L XL 2XL )
+  FEMALE_TEE_SIZES = %w( XS S M L XL 2XL )
   TEE_SIZE_DEFAULT = "L"
 
   configure :development do
