@@ -23,7 +23,7 @@ STDERR.puts "Remaining: #{remaining_to_choose}"
 
 abort("No more remaining to be chosen") unless remaining_to_choose > 0
 
-entrants = Entrant.unchosen.sample(remaining_to_choose)
+entrants = Entrant.unchosen.submitted_before_deadline.sample(remaining_to_choose)
 
 STDERR.puts "Updating entrants #{entrants.map(&:id)} as chosen"
 

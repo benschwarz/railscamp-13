@@ -10,6 +10,7 @@ class Thirteen < Sinatra::Base
   MALE_TEE_SIZES = %w( S M L XL 2XL )
   FEMALE_TEE_SIZES = %w( XS S M L XL 2XL )
   TEE_SIZE_DEFAULT = "L"
+  SUBMISSION_DEADLINE = Time.new(2013,5,21,0,0,0,"+10:00").utc
 
   configure :development do
     require 'sinatra/reloader'
@@ -60,6 +61,9 @@ class Thirteen < Sinatra::Base
     set_allowed_columns *PUBLIC_ATTRS
     plugin :validation_helpers
 
+    def self.submitted_before_deadline
+      filter { created_at >= SUBMISSION_DEADLINE }
+    end
     def self.unchosen
       filter(chosen_at: nil)
     end
