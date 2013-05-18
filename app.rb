@@ -42,6 +42,10 @@ class Thirteen < Sinatra::Base
     database.add_column :entrants, :dietary_reqs, String, text: true
   end
 
+  migration "add chosen_at column" do
+    database.add_column :entrants, :chosen_at, Time
+  end
+
   class Entrant < Sequel::Model
     PUBLIC_ATTRS = [
       :name, :email, :dietary_reqs, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
@@ -51,6 +55,13 @@ class Thirteen < Sinatra::Base
 
     set_allowed_columns *PUBLIC_ATTRS
     plugin :validation_helpers
+
+    def self.unchosen
+      filter(chosen_at: nil)
+    end
+    def self.chosen
+      exclude(chosen_at: nil)
+    end
 
     def validate
       super
@@ -66,6 +77,10 @@ class Thirteen < Sinatra::Base
         self.tee_size_male = nil
       end
       self.created_at = Time.now.utc
+    end
+
+    def choose!
+      update(chosen_at: Time.now.utc)
     end
   end
 
