@@ -23,9 +23,9 @@ STDERR.puts "Remaining: #{remaining_to_choose}"
 
 abort("No more remaining to be chosen") unless remaining_to_choose > 0
 
-abort("TODO: entrants = Entrant.unchosen.random_sample(remaining_to_choose)")
+entrants = Entrant.unchosen.sample(remaining_to_choose)
 
-STDERR.puts "Updating #{entrants.length} as chosen"
+STDERR.puts "Updating entrants #{entrants.map(&:id)} as chosen"
 
 chosen_time = Time.now.utc
 entrants.each {|e| e.choose!(chosen_time)}
