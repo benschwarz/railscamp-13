@@ -46,6 +46,10 @@ class Thirteen < Sinatra::Base
     database.add_column :entrants, :chosen_at, Time
   end
 
+  migration "add chosen_notified_at column" do
+    database.add_column :entrants, :chosen_notified_at, Time
+  end
+
   class Entrant < Sequel::Model
     PUBLIC_ATTRS = [
       :name, :email, :dietary_reqs, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
