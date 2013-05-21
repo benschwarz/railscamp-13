@@ -138,6 +138,7 @@ input, textarea {
   outline: 0;
 
   &:focus { background: rgba(255, 255, 255, .2); }
+  &:disabled { background: transparent; }
 }
 
 select,

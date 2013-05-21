@@ -6,6 +6,7 @@ require 'json'
 require 'time'
 require 'net/http'
 require 'httparty'
+require 'securerandom'
 
 module Railscamp
 class Thirteen < Sinatra::Base
@@ -80,12 +81,21 @@ class Thirteen < Sinatra::Base
     database.add_column :entrants, :charge_token, String
   end
 
+  migration "add secret_token to entrants" do
+    database.add_column :entrants, :secret_token, String
+    database[:entrants].map(:id).each do |id|
+      database[:entrants].where(:id => id).update(:secret_token => SecureRandom.hex)
+    end
+  end
+
   class Entrant < Sequel::Model
-    SUBMISSION_ATTRS = [
-      :name, :email, :dietary_reqs, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
-      :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
+    CC_ATTRS = [
+      :cc_name, :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
       :card_token, :ip_address
     ]
+    SUBMISSION_ATTRS = [
+      :name, :email, :dietary_reqs, :tee_cut, :tee_size_male, :tee_size_female
+    ] + CC_ATTRS
 
     plugin :validation_helpers
 
@@ -101,9 +111,15 @@ class Thirteen < Sinatra::Base
     def self.uncharged
       filter(charge_token: nil)
     end
+    def self.for_secret_token(token)
+      filter(secret_token:token).first || raise(Sinatra::NotFound)
+    end
 
     def set_submission_params(params)
       set_only params, *SUBMISSION_ATTRS
+    end
+    def set_card_update_params(params)
+      set_only params, *CC_ATTRS
     end
 
     def validate
@@ -111,7 +127,7 @@ class Thirteen < Sinatra::Base
       validates_presence SUBMISSION_ATTRS - [:tee_size_male, :tee_size_female, :dietary_reqs]
     end
 
-    def before_save
+    def before_create
       # Front-end form submits unneccesary tee size fields
       case self.tee_cut
       when "male"
@@ -120,6 +136,7 @@ class Thirteen < Sinatra::Base
         self.tee_size_male = nil
       end
       self.created_at = Time.now.utc
+      self.secret_token = SecureRandom.hex
     end
 
     def choose!
@@ -150,6 +167,7 @@ class Thirteen < Sinatra::Base
         entrant.set_charge_token!(response['token'])
         response
       else
+        entrant.errors.add("credit card", "charging failed")
         raise "Charge failed for entrant #{entrant.id}: \n#{body.inspect}"
       end
     end
@@ -175,6 +193,9 @@ class Thirteen < Sinatra::Base
     def tee_size_default
       TEE_SIZE_DEFAULT
     end
+    def h(text)
+      Rack::Utils.escape_html(text)
+    end
     def partial(name)
       erb name, layout: false
     end
@@ -188,7 +209,7 @@ class Thirteen < Sinatra::Base
   configure :production do
     before do
       case request.path
-      when "/register"
+      when "/register", %r{^/pay/}
         ensure_host! "secure.ruby.org.au", 'https', 302
       else
         ensure_host! "melb13.railscamps.org", 'http', 301
@@ -223,6 +244,42 @@ class Thirteen < Sinatra::Base
     else
       erb :register_closed
     end
+  end
+
+  get '/pay/:secret_token' do
+    @entrant = Entrant.for_secret_token(params[:secret_token])
+    if @entrant.charged?
+      return erb(:paid)
+    end
+
+    erb :pay
+  end
+
+  post '/pay/:secret_token' do
+    @entrant = Entrant.for_secret_token(params[:secret_token])
+    if @entrant.charged?
+      return erb(:paid)
+    end
+
+    @entrant.set_card_update_params(params[:entrant])
+
+    if not @entrant.valid?
+      @errors = @entrant.errors
+      return erb(:pay)
+    end
+
+    @entrant.save
+
+    begin
+      EntrantCharger.new.charge!(@entrant)
+    rescue Exception => e
+      STDERR.puts "Charge error: #{e.inspect}"
+      @errors = @entrant.errors
+      return erb(:pay)
+    end
+
+    # Reload the page
+    redirect request.path
   end
 
   get '/✌' do

@@ -7,7 +7,8 @@ define(["modernizr", "prefixfree", "services/typekit", "services/google_analytic
     // Ghetto router
     if (window.location.pathname == '/register') {
       registerPage();
+    } else if (window.location.pathname.match(/^\/pay\//)) {
+      registerPage();
     }
-
   }
 );

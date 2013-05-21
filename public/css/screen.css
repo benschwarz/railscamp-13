@@ -489,6 +489,8 @@ input, textarea {
   outline: 0; }
   input:focus, textarea:focus {
     background: rgba(255, 255, 255, 0.2); }
+  input:disabled, textarea:disabled {
+    background: transparent; }
 
 select,
 input[type='radio'] {
@@ -536,7 +538,7 @@ footer[role='contentinfo'] {
   display: table-footer-group; }
 
 .sponsor {
-  display: inline-block;
+  display: block;
   padding: 1em 0 2em;
   text-decoration: none; }
   .sponsor.pin {
@@ -552,6 +554,3 @@ footer[role='contentinfo'] {
         vertical-align: middle;
         padding-left: .2em;
         padding-bottom: .1em; }
-.twitter {
-  display: inline-block;
-  padding: 1em 0 2em; }
