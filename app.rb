@@ -142,7 +142,7 @@ class Thirteen < Sinatra::Base
       if entrant.charged?
         raise("Entrant #{entrant.id} has already been charged")
       end
-      body = Pin.post("/charges", params(entrant))
+      body = Pin.post("/charges", body: params(entrant))
       if response = body['response']
         @entrant.set_charge_token(response['token'])
         response
