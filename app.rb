@@ -81,13 +81,12 @@ class Thirteen < Sinatra::Base
   end
 
   class Entrant < Sequel::Model
-    PUBLIC_ATTRS = [
+    SUBMISSION_ATTRS = [
       :name, :email, :dietary_reqs, :tee_cut, :tee_size_male, :tee_size_female, :cc_name,
       :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
       :card_token, :ip_address
     ]
 
-    set_allowed_columns *PUBLIC_ATTRS
     plugin :validation_helpers
 
     def self.submitted_before_deadline
@@ -103,9 +102,13 @@ class Thirteen < Sinatra::Base
       filter(charge_token: nil)
     end
 
+    def set_submission_params(params)
+      set_only params, *SUBMISSION_ATTRS
+    end
+
     def validate
       super
-      validates_presence PUBLIC_ATTRS - [:tee_size_male, :tee_size_female, :dietary_reqs]
+      validates_presence SUBMISSION_ATTRS - [:tee_size_male, :tee_size_female, :dietary_reqs]
     end
 
     def before_save
@@ -208,7 +211,8 @@ class Thirteen < Sinatra::Base
   post '/register' do
     if submission_open?
       STDERR.puts JSON.generate(params)
-      entrant = Entrant.new(params[:entrant])
+      entrant = Entrant.new
+      entrant.set_submission_params(params[:entrant])
       if entrant.valid?
         entrant.save
         redirect "/✌"
