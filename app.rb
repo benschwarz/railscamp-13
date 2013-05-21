@@ -144,7 +144,7 @@ class Thirteen < Sinatra::Base
       end
       body = Pin.post("/charges", body: params(entrant))
       if response = body['response']
-        @entrant.set_charge_token(response['token'])
+        entrant.set_charge_token!(response['token'])
         response
       else
         raise "Charge failed for entrant #{entrant.id}: \n#{body.inspect}"
