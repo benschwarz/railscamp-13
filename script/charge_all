@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+# Charges all uncharged entrant
+
+$: << "." << File.dirname(__FILE__)
+
+require 'app'
+
+Railscamp::Thirteen::Entrant.uncharged.all.each do |entrant|
+  puts `#{File.dirname(__FILE__)}/charge #{entrant.id}`
+end

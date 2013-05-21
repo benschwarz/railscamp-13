@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+# Charges an entrant
+
+$: << "." << File.dirname(__FILE__)
+
+entrant_id = ARGV.first || abort("Usage: #{$0} ENTRANT_ID")
+
+require 'app'
+
+entrant = Railscamp::Thirteen::Entrant[entrant_id]
+
+STDERR.puts Railscamp::Thirteen::EntrantCharger.new.charge!(entrant)
