@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'sinatra/sequel'
 require 'json'
+require 'time'
 
 module Railscamp
 class Thirteen < Sinatra::Base
@@ -10,7 +11,11 @@ class Thirteen < Sinatra::Base
   MALE_TEE_SIZES = %w( S M L XL 2XL )
   FEMALE_TEE_SIZES = %w( XS S M L XL 2XL )
   TEE_SIZE_DEFAULT = "L"
-  SUBMISSION_DEADLINE = Time.new(2013,5,21,0,0,0,"+10:00").utc
+  SUBMISSION_DEADLINE = Time.parse(ENV['SUBMISSION_DEADLINE'])
+
+  def submission_open?
+    SUBMISSION_DEADLINE > Time.now
+  end
 
   configure :development do
     require 'sinatra/reloader'
@@ -62,7 +67,7 @@ class Thirteen < Sinatra::Base
     plugin :validation_helpers
 
     def self.submitted_before_deadline
-      filter { created_at >= SUBMISSION_DEADLINE }
+      filter { created_at >= SUBMISSION_DEADLINE.utc }
     end
     def self.unchosen
       filter(chosen_at: nil)
@@ -142,18 +147,26 @@ class Thirteen < Sinatra::Base
   end
 
   get '/register' do
-    erb :register
+    if submission_open?
+      erb :register
+    else
+      erb :register_closed
+    end
   end
 
   post '/register' do
-    STDERR.puts JSON.generate(params)
-    entrant = Entrant.new(params[:entrant])
-    if entrant.valid?
-      entrant.save
-      redirect "/✌"
+    if submission_open?
+      STDERR.puts JSON.generate(params)
+      entrant = Entrant.new(params[:entrant])
+      if entrant.valid?
+        entrant.save
+        redirect "/✌"
+      else
+        @errors = entrant.errors
+        erb :register
+      end
     else
-      @errors = entrant.errors
-      erb :register
+      erb :register_closed
     end
   end
 
