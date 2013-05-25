@@ -88,6 +88,10 @@ class Thirteen < Sinatra::Base
     end
   end
 
+  migration "add refunded_at to entrants" do
+    database.add_column :entrants, :refunded_at, Time
+  end
+
   class Entrant < Sequel::Model
     CC_ATTRS = [
       :cc_name, :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
@@ -110,6 +114,9 @@ class Thirteen < Sinatra::Base
     end
     def self.uncharged
       filter(charge_token: nil)
+    end
+    def self.refunded
+      exclude(refunded_at: nil)
     end
     def self.for_secret_token(token)
       filter(secret_token:token).first || raise(Sinatra::NotFound)
@@ -139,8 +146,11 @@ class Thirteen < Sinatra::Base
       self.secret_token = SecureRandom.hex
     end
 
-    def choose!
-      update chosen_at: Time.now.utc
+    def choose!(time=Time.now.utc)
+      update chosen_at: time
+    end
+    def refund!(time=Time.now.utc)
+      update refunded_at: time
     end
     def set_charge_token!(token)
       update charge_token: token
