@@ -1,0 +1,9 @@
+<div class="errors">
+  <h1>Oh snap! Something isn't quite right</h1>
+  <p>There was an error with your details. Give it another go.</p>
+  <ol>
+    <% for message in @errors.full_messages %>
+      <li><%= message %></li>
+    <% end %>
+  </ol>
+</div>

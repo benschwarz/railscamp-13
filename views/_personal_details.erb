@@ -1,0 +1,16 @@
+<h2>Personal details</h2>
+
+<fieldset>
+  <label for="name">Name</label>
+  <input id="name" name="entrant[name]" required autocompletetype="name" value="<%=h @entrant.name %>">
+</fieldset>
+
+<fieldset>
+  <label for="email">Email</label>
+  <input id="email" name="entrant[email]" type="email" required autocompletetype="email" value="<%=h @entrant.email %>">
+</fieldset>
+
+<fieldset>
+  <label for="diet">Dietary or other requirements</label>
+  <textarea id="diet" name="entrant[dietary_reqs]"><%=h @entrant.dietary_reqs %></textarea>
+</fieldset>

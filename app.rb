@@ -8,15 +8,20 @@ require 'net/http'
 require 'httparty'
 require 'securerandom'
 
+def required_env_var(env)
+  (ENV[env] || raise("Missing #{env} env var"))
+end
+
 module Railscamp
 class Thirteen < Sinatra::Base
 
   MALE_TEE_SIZES = %w( S M L XL 2XL )
   FEMALE_TEE_SIZES = %w( XS S M L XL 2XL )
   TEE_SIZE_DEFAULT = "L"
-  SUBMISSION_DEADLINE = Time.parse(ENV['SUBMISSION_DEADLINE'])
-  TICKET_PRICE_CENTS = (ENV["TICKET_PRICE_CENTS"] || raise("Missing TICKET_PRICE_CENTS env var")).to_i
+  SUBMISSION_DEADLINE = Time.parse(required_env_var('SUBMISSION_DEADLINE'))
+  TICKET_PRICE_CENTS = required_env_var("TICKET_PRICE_CENTS").to_i
   TICKET_PRICE_CURRENCY = "AUD"
+  LATE_REGISTRATION_TOKEN = required_env_var("LATE_REGISTRATION_TOKEN")
 
   def submission_open?
     SUBMISSION_DEADLINE > Time.now
@@ -27,8 +32,8 @@ class Thirteen < Sinatra::Base
     register Sinatra::Reloader
 
     set :pin, {
-      publishable_key: ENV['PIN_TEST_PUBLISHABLE_KEY'] || raise("Missing PIN_TEST_PUBLISHABLE_KEY env var"),
-      secret_key: ENV['PIN_TEST_SECRET_KEY'] || raise("Missing PIN_TEST_SECRET_KEY env var"),
+      publishable_key: required_env_var('PIN_TEST_PUBLISHABLE_KEY'),
+      secret_key: required_env_var('PIN_TEST_SECRET_KEY'),
       api: 'test',
       api_root: 'https://test-api.pin.net.au/1'
     }
@@ -36,8 +41,8 @@ class Thirteen < Sinatra::Base
 
   configure :production do
     set :pin, {
-      publishable_key: ENV['PIN_LIVE_PUBLISHABLE_KEY'] || raise("Missing PIN_LIVE_PUBLISHABLE_KEY env var"),
-      secret_key: ENV['PIN_LIVE_SECRET_KEY'] || raise("Missing PIN_LIVE_SECRET_KEY env var"),
+      publishable_key: required_env_var('PIN_LIVE_PUBLISHABLE_KEY'),
+      secret_key: required_env_var('PIN_LIVE_SECRET_KEY'),
       api: 'live',
       api_root: 'https://api.pin.net.au/1'
     }
@@ -206,12 +211,17 @@ class Thirteen < Sinatra::Base
     def h(text)
       Rack::Utils.escape_html(text)
     end
-    def partial(name)
-      erb name, layout: false
+    def partial(name, locals={})
+      erb name, layout: false, locals: locals
     end
     def ensure_host!(host, scheme, status)
       unless request.host == host && request.scheme == scheme
         redirect "#{scheme}://#{host}#{request.path}", status
+      end
+    end
+    def require_late_rego_token!
+      if not params[:token] == LATE_REGISTRATION_TOKEN
+        redirect '/'
       end
     end
   end
@@ -233,6 +243,7 @@ class Thirteen < Sinatra::Base
 
   get '/register' do
     if submission_open?
+      @entrant = Entrant.new
       erb :register
     else
       erb :register_closed
@@ -242,18 +253,51 @@ class Thirteen < Sinatra::Base
   post '/register' do
     if submission_open?
       STDERR.puts JSON.generate(params)
-      entrant = Entrant.new
-      entrant.set_submission_params(params[:entrant])
-      if entrant.valid?
-        entrant.save
+      @entrant = Entrant.new
+      @entrant.set_submission_params(params[:entrant])
+      if @entrant.valid?
+        @entrant.save
         redirect "/✌"
       else
-        @errors = entrant.errors
+        @errors = @entrant.errors
         erb :register
       end
     else
       erb :register_closed
     end
+  end
+
+  get '/late-rego/:token' do
+    require_late_rego_token!
+    @entrant = Entrant.new
+    erb :late_rego
+  end
+
+  post '/late-rego/:token' do
+    require_late_rego_token!
+    STDERR.puts JSON.generate(params)
+
+    # Save the entrant
+    @entrant = Entrant.new
+
+    @entrant.set_submission_params(params[:entrant])
+    unless @entrant.valid?
+      @errors = @entrant.errors
+      return erb(:late_rego)
+    end
+
+    @entrant.save
+
+    # Try to charge their card
+    begin
+      EntrantCharger.new.charge!(@entrant)
+    rescue Exception => e
+      STDERR.puts "Charge error: #{e.inspect}"
+      @errors = @entrant.errors
+      return erb(:late_rego)
+    end
+
+    erb(:paid)
   end
 
   get '/pay/:secret_token' do

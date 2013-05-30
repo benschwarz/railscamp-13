@@ -9,6 +9,8 @@ define(["modernizr", "prefixfree", "services/typekit", "services/google_analytic
       registerPage();
     } else if (window.location.pathname.match(/^\/pay\//)) {
       registerPage();
+    } else if (window.location.pathname.match(/^\/late-rego\//)) {
+      registerPage();
     }
   }
 );

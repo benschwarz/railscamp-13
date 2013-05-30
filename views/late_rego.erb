@@ -1,0 +1,26 @@
+<%
+  @page_class = "register"
+  @page_title = "Register"
+%>
+
+<%= partial :_header_banner %>
+
+<section class="grid" role="main">
+
+  <% if @errors %>
+    <%= partial :_rego_errors %>
+  <% else %>
+    <h1>You lucky thang, you get one of the last spots!</h1>
+  <% end %>
+
+  <form method="post">
+    <%= partial :_ticket_info %>
+    <%= partial :_personal_details %>
+    <%= partial :_tshirt %>
+    <%= partial :_card_details %>
+    <%= partial :_register_button, info: 'This card will be charged $260', action: 'Pay' %>
+  </form>
+
+</section>
+
+<%= partial :_payment_sponsorship %>

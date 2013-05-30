@@ -1,0 +1,46 @@
+<h2>Card details</h2>
+
+<fieldset>
+  <label for="cc-name">Name on card</label>
+  <input id="cc-name" name='entrant[cc_name]' required autocompletetype="cc-name" format=".+\s.+" pattern=".+\s.+" data-pin="name" value="<%=h @entrant.cc_name %>">
+</fieldset>
+
+<fieldset>
+  <label for="cc-number">Credit card number</label>
+  <input id="cc-number" type="text" autocompletetype="cc-number" format="\d{15,16}" pattern="\d{15,16}" placeholder="4242424242424242" required data-pin="number">
+</fieldset>
+
+<fieldset>
+  <label for="cc-expiry">Expiry (MM/YYYY)</label>
+  <input id="cc-expiry" type="text" autocompletetype="cc-expiry" format="\d{2}/(\d{2}|\d{4})" pattern="\d{2}/(\d{2}|\d{4})" placeholder="01/2020" required data-pin="expiry">
+</fieldset>
+
+<fieldset>
+  <label for="cc-cvc">CVC</label>
+  <input id="cc-cvc" type="text" autocompletetype="cc-csc" placeholder="123" required autocomplete="off" data-pin="cvc">
+</fieldset>
+
+<fieldset>
+  <label for="cc-address">Address</label>
+  <input id="cc-address" name='entrant[cc_address]' required autocompletetype="street-address" data-pin="address_line1" value="<%=h @entrant.cc_address %>">
+</fieldset>
+
+<fieldset>
+  <label for="cc-city">City</label>
+  <input id="cc-city" name='entrant[cc_city]' required autocompletetype="city" data-pin="address_city" value="<%=h @entrant.cc_city %>">
+</fieldset>
+
+<fieldset>
+  <label for="cc-postcode">Postcode</label>
+  <input id="cc-postcode" name='entrant[cc_post_code]' required autocompletetype="postal-code" data-pin="address_postcode" value="<%=h @entrant.cc_post_code %>">
+</fieldset>
+
+<fieldset>
+  <label for="cc-state">State</label>
+  <input id="cc-state" name='entrant[cc_state]' required autocompletetype="state" data-pin="address_state" value="<%=h @entrant.cc_state %>">
+</fieldset>
+
+<fieldset>
+  <label for="cc-country">Country</label>
+  <input id="cc-country" name='entrant[cc_country]' required autocompletetype="country-name" data-pin="address_country" value="<%=h @entrant.cc_country %>">
+</fieldset>

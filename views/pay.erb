@@ -6,16 +6,9 @@
 <%= partial :_header_banner %>
 
 <section class="grid" role="main">
+
   <% if @errors %>
-    <div class="errors">
-      <h1>Oh snap! Something isn't quite right</h1>
-      <p>There was an error with your details. Give it another go.</p>
-      <ol>
-        <% for message in @errors.full_messages %>
-          <li><%= message %></li>
-        <% end %>
-      </ol>
-    </div>
+    <%= partial :_rego_errors %>
   <% else %>
     <h1>Make a payment</h1>
     <p>Your Railscamp booking is not yet complete as you haven’t completed payment. Fill out your payment&nbsp;details below to confirm your booking.</p>
@@ -23,81 +16,20 @@
   <% end %>
 
   <form method="post">
-    <div class="ticket-info">
-      <div class="price">$260</div>
-      <div class="price-buys">Includes accomodation &amp; meals</div>
-    </div>
-
+    <%= partial :_ticket_info %>
     <h2>Personal details</h2>
-
     <fieldset>
       <label for="name">Name</label>
       <input id="name" name="entrant[name]" required autocompletetype="name" value="<%=h @entrant.name %>" disabled>
     </fieldset>
-
     <fieldset>
       <label for="email">Email</label>
       <input id="email" name="entrant[email]" type="email" required autocompletetype="email" value="<%=h @entrant.email %>" disabled>
     </fieldset>
-
-    <h2>Card details</h2>
-
-    <fieldset>
-      <label for="cc-name">Name on card</label>
-      <input id="cc-name" name='entrant[cc_name]' required autocompletetype="cc-name" format=".+\s.+" pattern=".+\s.+" data-pin="name" value="<%=h @entrant.cc_name %>">
-    </fieldset>
-
-    <fieldset>
-      <label for="cc-number">Credit card number</label>
-      <input id="cc-number" type="text" autocompletetype="cc-number" format="\d{15,16}" pattern="\d{15,16}" placeholder="4242424242424242" required data-pin="number">
-    </fieldset>
-
-    <fieldset>
-      <label for="cc-expiry">Expiry (MM/YYYY)</label>
-      <input id="cc-expiry" type="text" autocompletetype="cc-expiry" format="\d{2}/(\d{2}|\d{4})" pattern="\d{2}/(\d{2}|\d{4})" placeholder="01/2020" required data-pin="expiry">
-    </fieldset>
-
-    <fieldset>
-      <label for="cc-cvc">CVC</label>
-      <input id="cc-cvc" type="text" autocompletetype="cc-csc" placeholder="123" required autocomplete="off" data-pin="cvc">
-    </fieldset>
-
-    <fieldset>
-      <label for="cc-address">Address</label>
-      <input id="cc-address" name='entrant[cc_address]' required autocompletetype="street-address" data-pin="address_line1" value="<%=h @entrant.cc_address %>">
-    </fieldset>
-
-    <fieldset>
-      <label for="cc-city">City</label>
-      <input id="cc-city" name='entrant[cc_city]' required autocompletetype="city" data-pin="address_city" value="<%=h @entrant.cc_city %>">
-    </fieldset>
-
-    <fieldset>
-      <label for="cc-postcode">Postcode</label>
-      <input id="cc-postcode" name='entrant[cc_post_code]' required autocompletetype="postal-code" data-pin="address_postcode" value="<%=h @entrant.cc_post_code %>">
-    </fieldset>
-
-    <fieldset>
-      <label for="cc-state">State</label>
-      <input id="cc-state" name='entrant[cc_state]' required autocompletetype="state" data-pin="address_state" value="<%=h @entrant.cc_state %>">
-    </fieldset>
-
-    <fieldset>
-      <label for="cc-country">Country</label>
-      <input id="cc-country" name='entrant[cc_country]' required autocompletetype="country-name" data-pin="address_country" value="<%=h @entrant.cc_country %>">
-    </fieldset>
-
-    <fieldset class="registration">
-      <div class="registration-agreement">
-        This card will be charged $260
-      </div>
-      <button class="register-button" data-busy-text="Hold tight...">Pay</button>
-    </fieldset>
+    <%= partial :_card_details %>
+    <%= partial :_register_button, info: 'This card will be charged $260', action: 'Pay' %>
   </form>
+
 </section>
 
-<footer role="contentinfo">
-  <div class="sponsor grid pin">
-    Generously sponsored by <a href="https://pin.net.au/"><img src="/images/pin.svg" alt="Pin Payments"></a>
-  </div>
-</footer>
+<%= partial :_payment_sponsorship %>
