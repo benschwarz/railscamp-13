@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+# Marks an entrant as refunded
+
+$: << "." << File.dirname(__FILE__)
+
+email = ARGV.first || abort("Usage: #{$0} EMAIL_ADDRESS")
+
+require 'app'
+
+entrant = Railscamp::Thirteen::Entrant.where(email:email).first
+entrant.refund!
+
+STDERR.puts entrant.inspect
