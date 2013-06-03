@@ -84,7 +84,8 @@ define(["utils/dom", "pinjs", "domReady"], function(utils, pinjs, domReady) {
   }
 
   function showPinError(form, description, messages) {
-    console.log(description, messages);
+    if (window.console && console.log)
+      console.log(description, messages);
 
     var errors = document.createElement('div');
     errors.className = "errors";
