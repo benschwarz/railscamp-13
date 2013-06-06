@@ -42,8 +42,6 @@ define(function() {
 
     require([url],
       function() {
-        // Workaround for a bug in Pin.js
-        window.reqwest = require('reqwest');
         Pin.setPublishableKey(key);
         callback(Pin);
       },
