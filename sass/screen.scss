@@ -78,6 +78,17 @@ body {
   }
 
   .register { float: left; margin-top: 2em; font-size: 2em; }
+  .sponsors {
+    color: white; margin-top: 2em;
+    a {
+      opacity: .85; line-height: 70px; transition: .25s;
+      &:hover { opacity: 1; }
+      img { vertical-align: middle; }
+    }
+    a + a { margin-left: 1em; }
+    img.rea { width: 17em; }
+    img.envato { width: 10em; padding-bottom: 10px; }
+  }
 }
 
 .event-info[role='banner'] {
