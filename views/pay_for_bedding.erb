@@ -14,7 +14,7 @@
   <% end %>
 
   <form method="post">
-    <%= partial :_card_details, payment_model_name: "bedding_payment" %>
+    <%= partial :_card_details, payment_model_name: "bedding_payment", payment_model: @bedding_payment %>
     <%= partial :_register_button, info: 'This card will be charged $25', action: 'Pay' %>
   </form>
 

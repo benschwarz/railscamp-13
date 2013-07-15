@@ -97,7 +97,7 @@ class Thirteen < Sinatra::Base
     database.add_column :entrants, :refunded_at, Time
   end
 
-  migration "create the entrants table" do
+  migration "create the bedding_payments table" do
     database.create_table :bedding_payments do
       primary_key :id
       Time :created_at, null: false
