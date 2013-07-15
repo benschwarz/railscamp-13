@@ -264,7 +264,7 @@ class Thirteen < Sinatra::Base
   configure :production do
     before do
       case request.path
-      when "/register", %r{^/pay/}, %r{^/late\-rego/}
+      when "/register", %r{^/pay}, %r{^/late\-rego/}
         ensure_host! "secure.ruby.org.au", 'https', 302
       else
         ensure_host! "melb13.railscamps.org", 'http', 301
