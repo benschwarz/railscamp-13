@@ -392,11 +392,11 @@ class Thirteen < Sinatra::Base
 
     # Try to charge their card
     begin
-      PinCharger.new.charge!(@bedding_payment)
+      PinCharger.new(amount: 25_00).charge!(@bedding_payment)
     rescue Exception => e
       STDERR.puts "Charge error: #{e.inspect}"
       @errors = @bedding_payment.errors
-      return erb(:late_rego)
+      return erb(:pay_for_bedding)
     end
 
     erb(:paid)
