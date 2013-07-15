@@ -1,0 +1,23 @@
+<%
+  @page_class = "register"
+  @page_title = "Pay For Bedding"
+%>
+
+<%= partial :_header_banner %>
+
+<section class="grid" role="main">
+
+  <% if @errors %>
+    <%= partial :_rego_errors %>
+  <% else %>
+    <h1>Very late I know, but time to pay for your bedding!</h1>
+  <% end %>
+
+  <form method="post">
+    <%= partial :_card_details, payment_model_name: "bedding_payment" %>
+    <%= partial :_register_button, info: 'This card will be charged $25', action: 'Pay' %>
+  </form>
+
+</section>
+
+<%= partial :_payment_sponsorship %>

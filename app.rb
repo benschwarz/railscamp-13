@@ -97,11 +97,48 @@ class Thirteen < Sinatra::Base
     database.add_column :entrants, :refunded_at, Time
   end
 
-  class Entrant < Sequel::Model
+  migration "create the entrants table" do
+    database.create_table :bedding_payments do
+      primary_key :id
+      Time :created_at, null: false
+      String :cc_name, null: false
+      String :cc_address, null: false
+      String :cc_city, null: false
+      String :cc_post_code, null: false
+      String :cc_state, null: false
+      String :cc_country, null: false
+      String :card_token, null: false
+      String :ip_address, null: false
+      String :charge_token
+    end
+  end
+
+  module PayableModel
     CC_ATTRS = [
       :cc_name, :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
       :card_token, :ip_address
     ]
+
+    def set_charge_token!(token)
+      update charge_token: token
+    end
+    def charged?
+      charge_token
+    end
+  end
+
+  class BeddingPayment < Sequel::Model
+    include PayableModel
+
+    def validate
+      super
+      validates_presence CC_ATTRS
+    end
+  end
+
+  class Entrant < Sequel::Model
+    include PayableModel
+
     SUBMISSION_ATTRS = [
       :name, :email, :dietary_reqs, :tee_cut, :tee_size_male, :tee_size_female
     ] + CC_ATTRS
@@ -157,12 +194,6 @@ class Thirteen < Sinatra::Base
     def refund!(time=Time.now.utc)
       update refunded_at: time
     end
-    def set_charge_token!(token)
-      update charge_token: token
-    end
-    def charged?
-      charge_token
-    end
   end
 
   class Pin
@@ -172,29 +203,33 @@ class Thirteen < Sinatra::Base
     basic_auth Railscamp::Thirteen.settings.pin[:secret_key], ''
   end
 
-  class EntrantCharger
-    def charge!(entrant)
-      if entrant.charged?
-        raise("Entrant #{entrant.id} has already been charged")
-      end
-      body = Pin.post("/charges", body: params(entrant))
-      if response = body['response']
-        entrant.set_charge_token!(response['token'])
-        response
-      else
-        entrant.errors.add("credit card", "charging failed")
-        raise "Charge failed for entrant #{entrant.id}: \n#{body.inspect}"
-      end
-    end
-    def params(entrant)
-      {
-        email: entrant.email,
+  class PinCharger
+    def initialize(default_param_overrides = {})
+      @default_params = {
         description: "Railscamp XIII Melbourne",
         amount: TICKET_PRICE_CENTS,
         currency: TICKET_PRICE_CURRENCY,
-        ip_address: entrant.ip_address,
-        card_token: entrant.card_token
-      }
+      }.merge(param_overrides)
+    end
+    def charge!(payable_model)
+      if payable_model.charged?
+        raise("#{payable_model.class.name} #{payable_model.id} has already been charged")
+      end
+      body = Pin.post("/charges", body: params(payable_model))
+      if response = body['response']
+        payable_model.set_charge_token!(response['token'])
+        response
+      else
+        payable_model.errors.add("credit card", "charging failed")
+        raise "Charge failed for payable_model #{payable_model.id}: \n#{body.inspect}"
+      end
+    end
+    def params(payable_model)
+      @default_params.merge({
+        email: payable_model.email,
+        ip_address: payable_model.ip_address,
+        card_token: payable_model.card_token
+      })
     end
   end
 
@@ -290,7 +325,7 @@ class Thirteen < Sinatra::Base
 
     # Try to charge their card
     begin
-      EntrantCharger.new.charge!(@entrant)
+      PinCharger.new.charge!(@entrant)
     rescue Exception => e
       STDERR.puts "Charge error: #{e.inspect}"
       @errors = @entrant.errors
@@ -325,7 +360,7 @@ class Thirteen < Sinatra::Base
     @entrant.save
 
     begin
-      EntrantCharger.new.charge!(@entrant)
+      PinCharger.new.charge!(@entrant)
     rescue Exception => e
       STDERR.puts "Charge error: #{e.inspect}"
       @errors = @entrant.errors
@@ -334,6 +369,37 @@ class Thirteen < Sinatra::Base
 
     # Reload the page
     redirect request.path
+  end
+
+  get '/pay_for_bedding' do
+    @bedding_payment = BeddingPayment.new
+    erb(:pay_for_bedding)
+  end
+
+  post '/pay_for_bedding' do
+    STDERR.puts JSON.generate(params)
+
+    # Save the bedding_payment
+    @bedding_payment = Entrant.new
+
+    @bedding_payment.set_submission_params(params[:bedding_payment])
+    unless @bedding_payment.valid?
+      @errors = @bedding_payment.errors
+      return erb(:pay_for_bedding)
+    end
+
+    @bedding_payment.save
+
+    # Try to charge their card
+    begin
+      PinCharger.new.charge!(@bedding_payment)
+    rescue Exception => e
+      STDERR.puts "Charge error: #{e.inspect}"
+      @errors = @bedding_payment.errors
+      return erb(:late_rego)
+    end
+
+    erb(:paid)
   end
 
   get '/✌' do
