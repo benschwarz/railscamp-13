@@ -1,8 +1,10 @@
+<% payment_model_name = "entrant" unless defined?(payment_model_name) %>
+
 <h2>Card details</h2>
 
 <fieldset>
   <label for="cc-name">Name on card</label>
-  <input id="cc-name" name='entrant[cc_name]' required autocompletetype="cc-name" format=".+\s.+" pattern=".+\s.+" data-pin="name" value="<%=h @entrant.cc_name %>">
+  <input id="cc-name" name='<%= payment_model_name %>[cc_name]' required autocompletetype="cc-name" format=".+\s.+" pattern=".+\s.+" data-pin="name" value="<%=h payment_model.cc_name %>">
 </fieldset>
 
 <fieldset>
@@ -22,25 +24,28 @@
 
 <fieldset>
   <label for="cc-address">Address</label>
-  <input id="cc-address" name='entrant[cc_address]' required autocompletetype="street-address" data-pin="address_line1" value="<%=h @entrant.cc_address %>">
+  <input id="cc-address" name='<%= payment_model_name %>[cc_address]' required autocompletetype="street-address" data-pin="address_line1" value="<%=h payment_model.cc_address %>">
 </fieldset>
 
 <fieldset>
   <label for="cc-city">City</label>
-  <input id="cc-city" name='entrant[cc_city]' required autocompletetype="city" data-pin="address_city" value="<%=h @entrant.cc_city %>">
+  <input id="cc-city" name='<%= payment_model_name %>[cc_city]' required autocompletetype="city" data-pin="address_city" value="<%=h payment_model.cc_city %>">
 </fieldset>
 
 <fieldset>
   <label for="cc-postcode">Postcode</label>
-  <input id="cc-postcode" name='entrant[cc_post_code]' required autocompletetype="postal-code" data-pin="address_postcode" value="<%=h @entrant.cc_post_code %>">
+  <input id="cc-postcode" name='<%= payment_model_name %>[cc_post_code]' required autocompletetype="postal-code" data-pin="address_postcode" value="<%=h payment_model.cc_post_code %>">
 </fieldset>
 
 <fieldset>
   <label for="cc-state">State</label>
-  <input id="cc-state" name='entrant[cc_state]' required autocompletetype="state" data-pin="address_state" value="<%=h @entrant.cc_state %>">
+  <input id="cc-state" name='<%= payment_model_name %>[cc_state]' required autocompletetype="state" data-pin="address_state" value="<%=h payment_model.cc_state %>">
 </fieldset>
 
 <fieldset>
   <label for="cc-country">Country</label>
-  <input id="cc-country" name='entrant[cc_country]' required autocompletetype="country-name" data-pin="address_country" value="<%=h @entrant.cc_country %>">
+  <input id="cc-country" name='<%= payment_model_name %>[cc_country]' required autocompletetype="country-name" data-pin="address_country" value="<%=h payment_model.cc_country %>">
 </fieldset>
+
+<input type="hidden" name="<%= payment_model_name %>[card_token]" data-pin-card-token>
+<input type="hidden" name="<%= payment_model_name %>[ip_address]" data-pin-ip-address>

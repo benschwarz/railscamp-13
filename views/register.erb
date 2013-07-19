@@ -22,7 +22,7 @@
     <%= partial :_ticket_info %>
     <%= partial :_personal_details %>
     <%= partial :_tshirt %>
-    <%= partial :_card_details %>
+    <%= partial :_card_details, payment_model: @entrant %>
     <%= partial :_register_button, info: 'This card will be billed $260 on May 22nd,<br><em>only</em> if you’re successful in the ballot.',
                                    action: 'Enter the ballot' %>
   </form>

@@ -17,7 +17,7 @@
     <%= partial :_ticket_info %>
     <%= partial :_personal_details %>
     <%= partial :_tshirt %>
-    <%= partial :_card_details %>
+    <%= partial :_card_details, payment_model: @entrant %>
     <%= partial :_register_button, info: 'This card will be charged $260', action: 'Pay' %>
   </form>
 
