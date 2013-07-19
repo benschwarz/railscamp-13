@@ -113,9 +113,13 @@ class Thirteen < Sinatra::Base
     end
   end
 
+  migration "add email to bedding_payments" do
+    database.add_column :bedding_payments, :email, String
+  end
+
   module PayableModel
     CC_ATTRS = [
-      :cc_name, :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
+      :email, :cc_name, :cc_address, :cc_city, :cc_post_code, :cc_state, :cc_country,
       :card_token, :ip_address
     ]
 
@@ -129,10 +133,15 @@ class Thirteen < Sinatra::Base
 
   class BeddingPayment < Sequel::Model
     include PayableModel
+    plugin :validation_helpers
 
     def validate
       super
       validates_presence CC_ATTRS
+    end
+
+    def before_create
+      self.created_at = Time.now.utc
     end
   end
 
@@ -204,7 +213,7 @@ class Thirteen < Sinatra::Base
   end
 
   class PinCharger
-    def initialize(default_param_overrides = {})
+    def initialize(param_overrides = {})
       @default_params = {
         description: "Railscamp XIII Melbourne",
         amount: TICKET_PRICE_CENTS,
@@ -380,9 +389,8 @@ class Thirteen < Sinatra::Base
     STDERR.puts JSON.generate(params)
 
     # Save the bedding_payment
-    @bedding_payment = Entrant.new
+    @bedding_payment = BeddingPayment.new(params[:bedding_payment])
 
-    @bedding_payment.set_submission_params(params[:bedding_payment])
     unless @bedding_payment.valid?
       @errors = @bedding_payment.errors
       return erb(:pay_for_bedding)
@@ -392,7 +400,7 @@ class Thirteen < Sinatra::Base
 
     # Try to charge their card
     begin
-      PinCharger.new(amount: 25_00).charge!(@bedding_payment)
+      PinCharger.new(description: "Railscamp XIII Bedding", amount: 25_00).charge!(@bedding_payment)
     rescue Exception => e
       STDERR.puts "Charge error: #{e.inspect}"
       @errors = @bedding_payment.errors

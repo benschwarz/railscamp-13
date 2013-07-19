@@ -46,3 +46,6 @@
   <label for="cc-country">Country</label>
   <input id="cc-country" name='<%= payment_model_name %>[cc_country]' required autocompletetype="country-name" data-pin="address_country" value="<%=h payment_model.cc_country %>">
 </fieldset>
+
+<input type="hidden" name="<%= payment_model_name %>[card_token]" data-pin-card-token>
+<input type="hidden" name="<%= payment_model_name %>[ip_address]" data-pin-ip-address>
