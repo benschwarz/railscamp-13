@@ -331,6 +331,7 @@ table {
   border-spacing: 0; }
 
 .grid {
+  position: relative;
   max-width: 675px;
   margin: 0 auto; }
 
@@ -572,3 +573,11 @@ footer[role='contentinfo'] {
         vertical-align: middle;
         padding-left: .2em;
         padding-bottom: .1em; }
+.twitter {
+  position: absolute;
+  right: 0; 
+  top: 1em;
+  opacity: .6;
+  transition: opacity .25s; }
+  .twitter:hover {
+    opacity: 1; }

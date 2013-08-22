@@ -196,3 +196,12 @@ footer[role='contentinfo'] { display: table-footer-group; }
     }
   }
 }
+.twitter {
+  position: absolute;
+  right: 0;
+  top: 1em;
+  opacity: .6;
+  transition: opacity .25s; 
+  &:hover { opacity: 1; }
+}
+
